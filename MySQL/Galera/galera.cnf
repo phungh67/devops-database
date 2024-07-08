@@ -1,0 +1,21 @@
+[mysqld]
+binlog_format                   = ROW
+default-storage-engine          = innodb
+innodb_autoinc_lock_mode        = 2
+bind-address                    = 0.0.0.0                                               # listening address, can be public IP
+port                            = 13306                                                 # mysql port, re-map to avoid conflict with HA proxy
+
+# Galera Provider Configuration
+wsrep_on                        = ON
+wsrep_provider                  = /usr/lib/galera/libgalera_smm.so
+
+# Galera Cluster Configuration
+wsrep_cluster_name              = "mysql-cluster"                                       # custom name for cluster
+wsrep_cluster_address           = "gcomm://172.16.98.102,172.16.98.103,172.16.98.104"   # a set of all node's IPs
+
+# Galera Synchronization Configuration
+wsrep_sst_method                = rsync
+
+# Galera Node Configuration
+wsrep_node_address              = "172.16.98.102"                                       # current node's address
+wsrep_node_name                 = "mysql-node-001"                                      # current node's name
